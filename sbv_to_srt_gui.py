@@ -11,6 +11,11 @@ from typing import Iterable
 
 from sbv_to_srt import SBVConversionError, convert_file
 
+# Apple's bundled Tk 8.5 prints a deprecation notice even though it still works.
+# Keep development launches quiet; standalone builds should bundle a modern Tcl/Tk.
+if sys.platform == "darwin":
+    os.environ.setdefault("TK_SILENCE_DEPRECATION", "1")
+
 try:
     import tkinter as tk
     from tkinter import filedialog, messagebox, ttk
