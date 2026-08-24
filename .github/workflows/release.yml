@@ -24,10 +24,10 @@ jobs:
             artifact-path: dist/SBV-to-SRT.exe
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -53,7 +53,7 @@ jobs:
         run: ditto -c -k --sequesterRsrc --keepParent "dist/SBV to SRT.app" "dist/SBV-to-SRT-macOS.zip"
 
       - name: Upload standalone app
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact-name }}
           path: ${{ matrix.artifact-path }}
@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Download standalone apps
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
           merge-multiple: true
