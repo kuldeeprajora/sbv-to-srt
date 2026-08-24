@@ -1,11 +1,15 @@
 # SBV to SRT
 
-SBV to SRT is a dependency-free Python command-line tool that converts YouTube-style `.sbv` subtitle files into standards-compliant `.srt` files.
+SBV to SRT is a dependency-free Python tool that converts YouTube-style `.sbv` subtitle files into standards-compliant `.srt` files. It includes both a desktop interface and a command-line interface.
 
 ## Features
 
 - Convert one SBV file or multiple files in one command
 - Convert every `.sbv` file directly inside a selected directory
+- Add, remove, and review files in a desktop batch-conversion queue
+- Save results beside each source or into one selected output folder
+- Skip existing SRT files by default, with an optional replace setting in the desktop app
+- Track per-file conversion status and open the output folder
 - Preserve multiline subtitle text
 - Read UTF-8 files with or without a byte-order mark
 - Normalize timestamps to the SRT `HH:MM:SS,mmm` format
@@ -16,10 +20,29 @@ SBV to SRT is a dependency-free Python command-line tool that converts YouTube-s
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.9 or newer
 - macOS, Windows, or Linux
+- A Python installation with Tcl/Tk (`tkinter`) is required only for the desktop interface
 
-## Usage
+## Desktop Interface
+
+Launch the app with:
+
+```bash
+python3 sbv_to_srt_gui.py
+```
+
+Then:
+
+1. Use **Add Files** to select one or more `.sbv` files, or **Add Folder** to collect files from a folder.
+2. Choose whether SRT files should be saved beside their sources or in one output folder.
+3. Leave **Replace existing SRT files** disabled for safe, non-destructive conversion.
+4. Click **Convert to SRT**.
+5. Review the status shown for each file or click **Open Output Folder**.
+
+Folder selection is non-recursive. If your Python reports that `tkinter` is unavailable, install a Python build that includes Tcl/Tk and launch the app with that interpreter.
+
+## Command-Line Usage
 
 Convert one file beside the original:
 
@@ -61,5 +84,4 @@ Directory scanning is non-recursive. When `--output` is omitted, each `.srt` fil
 
 ## Status
 
-The converter is functional in current testing. This repository is private while documentation, automated tests, packaging, and release details are prepared.
-
+The conversion engine and initial desktop interface are functional in local testing. This repository is private while the UI is validated on macOS and Windows and standalone app packaging is prepared.
