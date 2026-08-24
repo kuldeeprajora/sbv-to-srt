@@ -2,6 +2,8 @@
 
 SBV to SRT is a dependency-free Python tool that converts YouTube-style `.sbv` subtitle files into standards-compliant `.srt` files. It includes both a desktop interface and a command-line interface.
 
+Current release: `v1.0.0`
+
 ## Features
 
 - Convert one SBV file or multiple files in one command

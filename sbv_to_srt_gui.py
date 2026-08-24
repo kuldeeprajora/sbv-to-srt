@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-from sbv_to_srt import SBVConversionError, convert_file
+from sbv_to_srt import VERSION, SBVConversionError, convert_file
 
 # Apple's bundled Tk 8.5 prints a deprecation notice even though it still works.
 # Keep development launches quiet; standalone builds should bundle a modern Tcl/Tk.
@@ -89,7 +89,7 @@ class ConverterApp:
         self._refresh_controls()
 
     def _configure_window(self) -> None:
-        self.root.title(APP_TITLE)
+        self.root.title(f"{APP_TITLE} {VERSION}")
         self.root.geometry("820x590")
         self.root.minsize(680, 480)
         self.root.configure(background=WINDOW_BACKGROUND)

@@ -16,6 +16,7 @@ from typing import Iterable, Sequence
 TIMESTAMP_PATTERN = re.compile(
     r"^\s*(?P<hours>\d+):(?P<minutes>\d{2}):(?P<seconds>\d{2})\.(?P<milliseconds>\d{1,3})\s*$"
 )
+VERSION = "1.0.0"
 
 
 @dataclass(frozen=True)
@@ -206,6 +207,11 @@ def build_parser() -> argparse.ArgumentParser:
             "Output .srt file for a single input, or output directory when converting "
             "multiple files."
         ),
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {VERSION}",
     )
     return parser
 
