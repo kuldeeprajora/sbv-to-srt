@@ -22,7 +22,7 @@ SBV to SRT is a dependency-free Python tool that converts YouTube-style `.sbv` s
 
 - Python 3.9 or newer
 - macOS, Windows, or Linux
-- A Python installation with Tcl/Tk (`tkinter`) is required only for the desktop interface
+- A Python installation with Tcl/Tk (`tkinter`) 8.6 or newer is required only for the desktop interface
 
 ## Desktop Interface
 
@@ -41,6 +41,23 @@ Then:
 5. Review the status shown for each file or click **Open Output Folder**.
 
 Folder selection is non-recursive. If your Python reports that `tkinter` is unavailable, install a Python build that includes Tcl/Tk and launch the app with that interpreter.
+
+### macOS
+
+Do not launch the GUI with Apple's `/usr/bin/python3`; its deprecated Tk 8.5 can produce a blank window on modern macOS.
+
+For a Homebrew Python 3.14 installation, add the matching modern Tk package:
+
+```bash
+brew install python-tk@3.14
+python3 sbv_to_srt_gui.py
+```
+
+For another Python version, install its matching `python-tk@3.x` formula. You can verify the active runtime with:
+
+```bash
+python3 -c "import tkinter as tk; print(tk.TkVersion)"
+```
 
 ## Command-Line Usage
 

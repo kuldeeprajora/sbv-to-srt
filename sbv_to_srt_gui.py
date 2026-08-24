@@ -27,6 +27,13 @@ except ImportError:
 
 
 APP_TITLE = "SBV to SRT Converter"
+WINDOW_BACKGROUND = "#F3F5F8"
+SURFACE_BACKGROUND = "#FFFFFF"
+TEXT_COLOR = "#17202A"
+MUTED_TEXT_COLOR = "#667085"
+BORDER_COLOR = "#C9D1DC"
+ACCENT_COLOR = "#2563EB"
+ACCENT_HOVER_COLOR = "#1D4ED8"
 
 
 def normalized_path(path: Path) -> str:
@@ -85,18 +92,107 @@ class ConverterApp:
         self.root.title(APP_TITLE)
         self.root.geometry("820x590")
         self.root.minsize(680, 480)
+        self.root.configure(background=WINDOW_BACKGROUND)
         self.root.option_add("*tearOff", False)
 
     def _configure_style(self) -> None:
         style = ttk.Style(self.root)
         available = style.theme_names()
-        if sys.platform == "win32" and "vista" in available:
+
+        # Aqua can ignore custom colors in macOS dark mode, and its deprecated
+        # Tk 8.5 version may render blank controls. Clam stays consistent.
+        if sys.platform == "darwin" and "clam" in available:
+            style.theme_use("clam")
+        elif sys.platform == "win32" and "vista" in available:
             style.theme_use("vista")
         elif "clam" in available and sys.platform != "darwin":
             style.theme_use("clam")
-        style.configure("Title.TLabel", font=("TkDefaultFont", 20, "bold"))
-        style.configure("Subtitle.TLabel", foreground="#60646c")
-        style.configure("Primary.TButton", font=("TkDefaultFont", 10, "bold"), padding=(14, 8))
+
+        style.configure(".", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR)
+        style.configure("TFrame", background=WINDOW_BACKGROUND)
+        style.configure("TLabel", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR)
+        style.configure("Title.TLabel", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR, font=("TkDefaultFont", 20, "bold"))
+        style.configure("Subtitle.TLabel", background=WINDOW_BACKGROUND, foreground=MUTED_TEXT_COLOR)
+        style.configure(
+            "TButton",
+            background=SURFACE_BACKGROUND,
+            foreground=TEXT_COLOR,
+            bordercolor=BORDER_COLOR,
+            padding=(10, 6),
+        )
+        style.map(
+            "TButton",
+            background=[("active", "#E7ECF3"), ("pressed", "#DCE3EC")],
+            foreground=[("disabled", "#98A2B3")],
+        )
+        style.configure(
+            "Primary.TButton",
+            background=ACCENT_COLOR,
+            foreground="#FFFFFF",
+            bordercolor=ACCENT_COLOR,
+            font=("TkDefaultFont", 10, "bold"),
+            padding=(14, 8),
+        )
+        style.map(
+            "Primary.TButton",
+            background=[("active", ACCENT_HOVER_COLOR), ("pressed", "#1E40AF"), ("disabled", "#A8B8D8")],
+            foreground=[("disabled", "#EEF2F8")],
+        )
+        style.configure(
+            "TEntry",
+            fieldbackground=SURFACE_BACKGROUND,
+            foreground=TEXT_COLOR,
+            bordercolor=BORDER_COLOR,
+            insertcolor=TEXT_COLOR,
+            padding=5,
+        )
+        style.map(
+            "TEntry",
+            fieldbackground=[("disabled", "#E7EBF0")],
+            foreground=[("disabled", "#667085")],
+        )
+        style.configure("TLabelframe", background=WINDOW_BACKGROUND, bordercolor=BORDER_COLOR)
+        style.configure("TLabelframe.Label", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR)
+        style.configure("TRadiobutton", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR)
+        style.configure("TCheckbutton", background=WINDOW_BACKGROUND, foreground=TEXT_COLOR)
+        style.map(
+            "TRadiobutton",
+            background=[("active", WINDOW_BACKGROUND)],
+            foreground=[("disabled", "#98A2B3")],
+        )
+        style.map(
+            "TCheckbutton",
+            background=[("active", WINDOW_BACKGROUND)],
+            foreground=[("disabled", "#98A2B3")],
+        )
+        style.configure(
+            "Treeview",
+            background=SURFACE_BACKGROUND,
+            fieldbackground=SURFACE_BACKGROUND,
+            foreground=TEXT_COLOR,
+            bordercolor=BORDER_COLOR,
+            rowheight=27,
+        )
+        style.map(
+            "Treeview",
+            background=[("selected", ACCENT_COLOR)],
+            foreground=[("selected", "#FFFFFF")],
+        )
+        style.configure(
+            "Treeview.Heading",
+            background="#E7EBF0",
+            foreground=TEXT_COLOR,
+            bordercolor=BORDER_COLOR,
+            font=("TkDefaultFont", 10, "bold"),
+            padding=(8, 6),
+        )
+        style.map("Treeview.Heading", background=[("active", "#DCE3EC")])
+        style.configure(
+            "Horizontal.TProgressbar",
+            background=ACCENT_COLOR,
+            troughcolor="#DCE3EC",
+            bordercolor="#DCE3EC",
+        )
 
     def _build_ui(self) -> None:
         container = ttk.Frame(self.root, padding=20)
@@ -405,6 +501,14 @@ def main() -> int:
         print(
             "Error: tkinter is not available in this Python installation. "
             "Install a Python build that includes Tcl/Tk, then run this file again.",
+            file=sys.stderr,
+        )
+        return 1
+    if sys.platform == "darwin" and tk.TkVersion < 8.6:
+        print(
+            "Error: Apple's legacy system Tk is not supported because it can render a blank "
+            "window on modern macOS. Use a current Python with Tk 8.6 or newer. Homebrew "
+            "users can install the python-tk formula matching their Python version.",
             file=sys.stderr,
         )
         return 1
