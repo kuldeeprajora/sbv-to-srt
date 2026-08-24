@@ -101,4 +101,13 @@ Directory scanning is non-recursive. When `--output` is omitted, each `.srt` fil
 
 ## Status
 
-The conversion engine and initial desktop interface are functional in local testing. This repository is private while the UI is validated on macOS and Windows and standalone app packaging is prepared.
+The conversion engine and desktop interface are covered by automated tests on macOS and Windows. Tagged releases build separate standalone artifacts for each platform, so end users do not need to install Python.
+
+## Standalone Builds
+
+The GitHub Actions release workflow creates:
+
+- `SBV-to-SRT-macOS.zip` containing the macOS `.app`
+- `SBV-to-SRT.exe` for Windows
+
+Builds are unsigned during private development. macOS Gatekeeper or Windows SmartScreen may therefore display a warning until code signing is configured for a public release.
